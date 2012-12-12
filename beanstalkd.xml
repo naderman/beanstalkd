@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type="manifest" name="beanstalkd">
+<service name="application/servers/beanstalkd" type="service" version="1">
+  <create_default_instance enabled="false" />
+  <single_instance />
+  <dependency name="network" grouping="require_all" restart_on="none" type="service">
+    <service_fmri value="svc:/milestone/network:default" />
+  </dependency>
+  <dependency name="filesystem-local" grouping="require_all" restart_on="none" type="service">
+    <service_fmri value="svc:/system/filesystem/local:default" />
+  </dependency>
+  <method_context>
+    <method_credential user="webservd" group="webservd" />
+  </method_context>
+  <exec_method type="method" name="start" exec="/usr/local/beanstalkd/bin/svcs-startup.sh start" timeout_seconds="30"/>
+  <exec_method type="method" name="stop" exec="/usr/local/beanstalkd/bin/svcs-startup.sh stop" timeout_seconds="30" />
+  <exec_method type="method" name="restart" exec="/usr/local/beanstalkd/bin/svcs-startup.sh restart" timeout_seconds="30" />
+  <property_group name="beanstalkd" type="application">
+    <propval name="listen" type="astring" value="127.0.0.1" />
+  </property_group>
+  <stability value="Unstable" />
+  <template>
+    <common_name>
+      <loctext xml:lang="C">beanstalkd</loctext>
+    </common_name>
+  </template> 
+</service>
+</service_bundle>
+
